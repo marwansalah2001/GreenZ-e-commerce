@@ -3,7 +3,7 @@
 require_once 'layout.php';
 
 require_once 'connection.php';
-session_start();
+
 if ($_GET) {
 
 	$itemId = $_GET['itemID'];

@@ -1,3 +1,8 @@
+<?php
+
+session_start();
+
+?>
 <head>
     <title>GreenZ</title>
     <meta charset="utf-8">
@@ -31,9 +36,12 @@
                     <li class="nav-item"><a href="contact.php" class="nav-link">Contact</a></li>
 
                     <li class="nav-item cta cta-colored"><a href="cart.php" class="nav-link"><i
-                                class="fas fa-shopping-cart"></i>[0]</a></li>
+                                class="fas fa-shopping-cart"></i>[<?php 
+                                
+                                
+                                ?>]</a></li>
 
-                    <?php if (isset($_SESSION['userId'])) {
+                    <?php if (isset($_SESSION['userID'])) {
 
 
                         ?>
