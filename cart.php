@@ -1,6 +1,56 @@
 <?php
-require_once "layout.php";
-require_once "connection.php"; ?>
+require "layout.php";
+require_once "connection.php";
+$user_id = $_SESSION['userID'];
+
+
+if ($_GET) {
+
+	if ($_GET['action'] == 'remove') {
+
+		#removing items from databaes
+
+		$cartID = $_GET['cartID'];
+		$sql = "delete from cart where id = '$cartID'";
+		$res = $connect->query($sql);
+
+	} else {
+
+		#insert cart total price to orders table
+
+		$neworder = "insert into invoice (userID) values ('$user_id')";
+		$res = $connect->query($neworder);
+		$lastinvoice = $connect->insert_id;
+
+		$cartitems = "select itemID,quantity,price from cart inner join items on itemID=items.id  where userID='$user_id'";
+
+		$cart = $connect->query($cartitems);
+
+		while ($row = $cart->fetch_assoc()) {
+
+			$itemID = $row['itemID'];
+			$quantity = $row['quantity'];
+			$price = $row['price'];
+
+			$insertitems = "insert into orders (itemID , quantity , invoiceID,price)
+          values ('$itemID','$quantity','$lastinvoice','$price')";
+
+		  $res=$connect->query($insertitems);
+
+		}
+
+
+		#empty cart after sending order
+
+		$deltecart="delete from cart where userID='$user_id' ";
+		$res=$connect->query($deltecart);
+
+
+
+
+	}
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -36,31 +86,48 @@ require_once "connection.php"; ?>
 						<tbody>
 
 							<?php
-							$sql = "select c.id,i.name,i.price,i.imgPath,c.quantity from cart as c inner join items as i on i.id=c.itemID ";
+							$sql = "select c.id as cid,i.name,i.price,i.imgPath,c.quantity from cart as c inner join items as i on i.id=c.itemID
+							 where userID='$user_id' ";
 							$result = $connect->query($sql);
+							$total_price = 0;
 							while ($row = $result->fetch_assoc()) {
 
 								?>
 								<tr class="text-center">
-									<td class="product-remove"><a href="#"><i class="fas fa-times"></i></a></td>
+									<td class="product-remove"><a
+											href="cart.php?action=remove&cartID=<?php echo $row['cid'] ?>"><i
+												class="fas fa-times"></i></a></td>
 
 									<td class="image-prod">
-										<div class="img" style="background-image:url(images/<?php echo $row['imgPath'] ?>);"></div>
+										<div class="img"
+											style="background-image:url(images/<?php echo $row['imgPath'] ?>);"></div>
 									</td>
 
 									<td class="product-name">
-										<h3><?php echo $row['name'] ?></h3>
+										<h3>
+											<?php echo $row['name'] ?>
+										</h3>
 
 									</td>
 
-									<td class="price"><?php echo $row['price'] ?></td>
+									<td class="price">
+										<?php echo $row['price'] ?>
+									</td>
 
-									<td class="quantity"><?php echo $row['quantity'] ?></td>
+									<td class="quantity">
+										<?php echo $row['quantity'] ?>
+									</td>
 
-									<td class="total"><?php echo $row['price']* $row['quantity'] ?></td>
+									<td class="total">
+										<?php echo $row['price'] * $row['quantity'] ?>
+									</td>
 								</tr>
 
-							<?php } ?>
+
+								<?php
+								$total_price += $row['price'] * $row['quantity'];
+
+							} ?>
 
 
 						</tbody>
@@ -75,19 +142,25 @@ require_once "connection.php"; ?>
 					<h3>Cart Totals</h3>
 					<p class="d-flex">
 						<span>Subtotal</span>
-						<span>$20.60</span>
+						<span>
+							<?php echo $total_price ?>
+						</span>
 					</p>
 					<p class="d-flex">
-						<span>Delivery</span>
-						<span>$0.00</span>
+						<span>Fees</span>
+						<span>
+							<?php echo $total_price * 0.14 ?>
+						</span>
 					</p>
 					<hr>
 					<p class="d-flex total-price">
 						<span>Total</span>
-						<span>$20.60</span>
+						<span>
+							<?php echo $total_price + $total_price * 0.14 ?>
+						</span>
 					</p>
 				</div>
-				<p><a href="checkout.php" class="btn btn-primary py-3 px-4">Place order</a></p>
+				<p><a href="cart.php?action = confirm" class="btn btn-primary py-3 px-4">Place order</a></p>
 			</div>
 		</div>
 	</div>

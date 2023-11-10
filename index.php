@@ -1,6 +1,6 @@
 <?php
 
-require_once 'layout.php';
+require 'layout.php';
 
 require_once 'connection.php';
 

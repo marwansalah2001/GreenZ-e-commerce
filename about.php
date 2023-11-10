@@ -1,4 +1,4 @@
-<?php require_once "layout.php"; ?>
+<?php require "layout.php"; ?>
 <!DOCTYPE html>
 <html lang="en">
 

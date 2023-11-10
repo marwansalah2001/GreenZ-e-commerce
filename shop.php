@@ -1,5 +1,5 @@
 <?php
-require_once 'layout.php';
+require 'layout.php';
 require_once 'connection.php';
 
 if ($_GET) {
@@ -88,7 +88,7 @@ if ($_GET) {
 									<div class="m-auto d-flex">
 
 										<span><a class="buy-now d-flex justify-content-center align-items-center mx-1"
-												href="index.php?itemID=<?php echo $row['id'] ?>"><i
+												href="shop.php?itemID=<?php echo $row['id'] ?>"><i
 													class="fas fa-shopping-cart"></i></a></span>
 
 									</div>

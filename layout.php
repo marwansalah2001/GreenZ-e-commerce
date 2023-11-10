@@ -1,8 +1,12 @@
 <?php
-
+require_once 'connection.php';
 session_start();
+$user_id = $_SESSION['userID'];
+
+
 
 ?>
+
 <head>
     <title>GreenZ</title>
     <meta charset="utf-8">
@@ -35,11 +39,21 @@ session_start();
                     <li class="nav-item"><a href="about.php" class="nav-link">About</a></li>
                     <li class="nav-item"><a href="contact.php" class="nav-link">Contact</a></li>
 
-                    <li class="nav-item cta cta-colored"><a href="cart.php" class="nav-link"><i
-                                class="fas fa-shopping-cart"></i>[<?php 
-                                
-                                
-                                ?>]</a></li>
+                    <li class="nav-item cta cta-colored">
+                        <a href="cart.php" class="nav-link">
+                            <i class="fas fa-shopping-cart"></i>
+                            [<?php if (isset($_SESSION['userID'])) {
+
+                                $sql = "SELECT COUNT(*) AS cartCount FROM cart WHERE userID = '$user_id'";
+                                $result = $connect->query($sql);
+                                $row = $result->fetch_assoc();
+                                echo $row['cartCount'];
+                            } else {
+                                echo 0;
+                            }
+                            ?>]
+                        </a>
+                    </li>
 
                     <?php if (isset($_SESSION['userID'])) {
 
