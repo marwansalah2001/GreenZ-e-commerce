@@ -29,10 +29,32 @@
                     <li class="nav-item"><a href="shop.php" class="nav-link">Shop</a></li>
                     <li class="nav-item"><a href="about.php" class="nav-link">About</a></li>
                     <li class="nav-item"><a href="contact.php" class="nav-link">Contact</a></li>
+
                     <li class="nav-item cta cta-colored"><a href="cart.php" class="nav-link"><i
                                 class="fas fa-shopping-cart"></i>[0]</a></li>
+
+                    <?php if (isset($_SESSION['userId'])) {
+
+
+                        ?>
+                        <li class="nav-item"><a href="logout.php" class="nav-link">LogOut</a></li>
+
+
+                    <?php } else {
+
+
+
+                        ?>
+
+                        <li class="nav-item"><a href="Login.php" class="nav-link">Login</a></li>
+
+                    <?php }
+
+
+
+                    ?>
 
                 </ul>
             </div>
         </div>
-    </nav>  
+    </nav>
