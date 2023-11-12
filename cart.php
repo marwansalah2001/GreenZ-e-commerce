@@ -16,7 +16,7 @@ $user_id = $_SESSION['userID'];
 
 if ($_GET) {
 
-	if ($_GET['action'] == 'remove') {
+	if (isset($_GET['action'])&&$_GET['action'] == "remove") {
 
 		#removing items from databaes
 

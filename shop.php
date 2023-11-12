@@ -2,9 +2,10 @@
 require 'layout.php';
 require_once 'connection.php';
 
+
 if ($_GET) {
 
-	if ($_GET['action'] == "filter") {
+	if (isset($_GET['action'])&&$_GET['action'] == "filter") {
 
 		$catID = $_GET['catID'];
 		$query = "select * from items where catID = '$catID'";
@@ -13,7 +14,7 @@ if ($_GET) {
 
 	}
 	#if updating cart and not filtering all values
-	else if (!$_GET['action'] == "all") {
+	else if (!isset($_GET['action'])) {
 		$itemId = $_GET['itemID'];
 		$userId = $_SESSION['userID'];
 
@@ -165,22 +166,30 @@ if ($_GET) {
 
 <script>
 	document.addEventListener('DOMContentLoaded', function () {
-		var categoryLinks = document.querySelectorAll('.product-category a');
+    var categoryLinks = document.querySelectorAll('.product-category a');
 
-		categoryLinks.forEach(function (link) {
+    categoryLinks.forEach(function (link) {
+        // Check whether the href attribute of a link is present in the current URL
+        if (window.location.href.indexOf(link.getAttribute('href')) !== -1) {
+            link.classList.add('active');
+        }
+        link.addEventListener('click', function (event) {
+            // Remove the "active" class from all category links
+            categoryLinks.forEach(function (otherLink) {
+                otherLink.classList.remove('active');
+            });
+            // Add the "active" class to the clicked category link
+            link.classList.add('active');
 
-			// condition that checks whether the href attribute of a link is present in the current URL
-			if (window.location.href.indexOf(link.getAttribute('href')) !== -1) {
-				link.classList.add('active');
-			}
-			link.addEventListener('click', function () {
-				categoryLinks.forEach(function (otherLink) {
-					otherLink.classList.remove('active');
-				});
-				link.classList.add('active');
-			});
-		});
-	});
+            // Check if the clicked link is not the "All" link
+            if (!link.getAttribute('href').includes('action=all')) {
+                // Prevent the default link behavior if it's not the "All" link
+                event.preventDefault();
+            }
+        });
+    });
+});
+
 </script>
 
 
