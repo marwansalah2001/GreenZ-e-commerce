@@ -4,23 +4,38 @@ require_once 'connection.php';
 
 if ($_GET) {
 
-	$itemId = $_GET['itemID'];
-	$userId = $_SESSION['userID'];
+	if ($_GET['action'] == "filter") {
 
-	$select = "select * from cart where userID='$userId' and itemID='$itemId' ";
-
-	$res = $connect->query($select);
-
-	if ($res->num_rows > 0) {
-
-		$update = "update cart set quantity=quantity+1 where userID='$userId' and itemID='$itemId' ";
-		$res = $connect->query($update);
+		$catID = $_GET['catID'];
+		$query = "select * from items where catID = '$catID'";
 
 
-	} else {
-		$insert = "insert into cart (userID,itemID,quantity) values ('$userId','$itemId',1)";
-		$res = $connect->query($insert);
+
 	}
+	#if updating cart and not filtering all values
+	else if (!$_GET['action'] == "all") {
+		$itemId = $_GET['itemID'];
+		$userId = $_SESSION['userID'];
+
+		$select = "select * from cart where userID='$userId' and itemID='$itemId' ";
+
+		$res = $connect->query($select);
+
+		if ($res->num_rows > 0) {
+
+			$update = "update cart set quantity=quantity+1 where userID='$userId' and itemID='$itemId' ";
+			$res = $connect->query($update);
+
+
+		} else {
+			$insert = "insert into cart (userID,itemID,quantity) values ('$userId','$itemId',1)";
+			$res = $connect->query($insert);
+		}
+
+
+	}
+
+
 }
 
 ?>
@@ -46,23 +61,48 @@ if ($_GET) {
 	<div class="container">
 		<div class="row justify-content-center">
 			<div class="col-md-10 mb-5 text-center">
+
+				<?php
+				$select = "select * from categories";
+				$res = $connect->query($select);
+
+				?>
 				<ul class="product-category">
-					<li><a href="#" class="active">All</a></li>
-					<li><a href="#">Vegetables</a></li>
-					<li><a href="#">Fruits</a></li>
-					<li><a href="#">Juice</a></li>
-					<li><a href="#">Dried</a></li>
+					<li><a href="shop.php?action=all" class="">All</a></li>
+					<?php
+					while ($row = $res->fetch_assoc()) {
+
+						?>
+						<li><a href="shop.php?action=filter&catID=<?php echo $row['id'] ?>">
+								<?php echo $row['name'] ?>
+							</a></li>
+
+					<?php } ?>
+
 				</ul>
 			</div>
 		</div>
 		<div class="row">
 
 			<?php
-			$selectOffer = "select * from items";
-			$res = $connect->query($selectOffer);
+
+			#check if user filtered the categories to set catID and fetch it in database
+			
+			if (isset($catID)) {
+
+				$select = "select * from items where catID='$catID'";
+
+
+			} else {
+
+				$select = "select * from items";
+
+
+			}
+
+			$res = $connect->query($select);
 
 			while ($row = $res->fetch_assoc()) {
-
 
 
 				?>
@@ -120,6 +160,30 @@ if ($_GET) {
 <script src="js/jquery.min.js"></script>
 <script src="js/popper.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
+
+										
+
+<script>
+	document.addEventListener('DOMContentLoaded', function () {
+		var categoryLinks = document.querySelectorAll('.product-category a');
+
+		categoryLinks.forEach(function (link) {
+
+			// condition that checks whether the href attribute of a link is present in the current URL
+			if (window.location.href.indexOf(link.getAttribute('href')) !== -1) {
+				link.classList.add('active');
+			}
+			link.addEventListener('click', function () {
+				categoryLinks.forEach(function (otherLink) {
+					otherLink.classList.remove('active');
+				});
+				link.classList.add('active');
+			});
+		});
+	});
+</script>
+
+
 
 </body>
 

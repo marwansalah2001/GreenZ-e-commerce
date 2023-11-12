@@ -1,21 +1,20 @@
 function checkVisible() {
-	var windowHeight = $(window).height();
-	var windowBottom = $(window).scrollTop() + windowHeight;
+  var windowHeight = $(window).height();
+  var windowBottom = $(window).scrollTop() + windowHeight;
 
-	$(".fade-in-section").each(function() {
-		var sectionTop = $(this).offset().top;
-		var sectionBottom = sectionTop + $(this).outerHeight();
+  $(".fade-in-section").each(function () {
+    var sectionTop = $(this).offset().top;
+    var sectionBottom = sectionTop + $(this).outerHeight();
 
-		if (sectionTop <= windowBottom && sectionBottom >= $(window).scrollTop()) {
-			$(this).addClass("is-visible");
-		}
-	});
+    if (sectionTop <= windowBottom && sectionBottom >= $(window).scrollTop()) {
+      $(this).addClass("is-visible");
+    }
+  });
 }
 
-$(window).on("scroll", function() {
-	checkVisible();
+$(window).on("scroll", function () {
+  checkVisible();
 });
-
 
 let slideIndex = 0;
 showSlides();
@@ -27,7 +26,9 @@ function showSlides() {
     slides[i].style.display = "none";
   }
   slideIndex++;
-  if (slideIndex > slides.length) {slideIndex = 1}
-  slides[slideIndex-1].style.display = "block";
-  setTimeout(showSlides, 3500); 
+  if (slideIndex > slides.length) {
+    slideIndex = 1;
+  }
+  slides[slideIndex - 1].style.display = "block";
+  setTimeout(showSlides, 3500);
 }

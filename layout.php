@@ -35,37 +35,35 @@ session_start();
                     <li class="nav-item"><a href="shop.php" class="nav-link">Shop</a></li>
                     <li class="nav-item"><a href="about.php" class="nav-link">About</a></li>
                     <li class="nav-item"><a href="contact.php" class="nav-link">Contact</a></li>
-
-                    <<!-- Add this line inside the cart count <li> element -->
-                        <li class="nav-item cta cta-colored" id="cartCountContainer">
-                            <a href="cart.php" class="nav-link">
-                                <i class="fas fa-shopping-cart"></i>
-                                [
-                                <?php echo isset($_SESSION['userID']) ? '<span id="cartCount">' . 0 . '</span>' : '0'; ?>]
-                            </a>
-                        </li>
+                    <li class="nav-item cta cta-colored" id="cartCountContainer">
+                        <a href="cart.php" class="nav-link">
+                            <i class="fas fa-shopping-cart"></i>
+                            [
+                            <?php echo isset($_SESSION['userID']) ? '<span id="cartCount">' . 0 . '</span>' : '0'; ?>]
+                        </a>
+                    </li>
 
 
-                        <?php if (isset($_SESSION['userID'])) {
+                    <?php if (isset($_SESSION['userID'])) {
 
 
-                            ?>
-                            <li class="nav-item"><a href="logout.php" class="nav-link">LogOut</a></li>
+                        ?>
+                        <li class="nav-item"><a href="logout.php" class="nav-link">LogOut</a></li>
 
 
-                        <?php } else {
-
-
-
-                            ?>
-
-                            <li class="nav-item"><a href="Login.php" class="nav-link">Login</a></li>
-
-                        <?php }
+                    <?php } else {
 
 
 
                         ?>
+
+                        <li class="nav-item"><a href="Login.php" class="nav-link">Login</a></li>
+
+                    <?php }
+
+
+
+                    ?>
 
                 </ul>
             </div>
