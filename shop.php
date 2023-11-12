@@ -121,7 +121,7 @@ if ($_GET) {
 								<div class="pricing">
 									<p class="price"><span>
 											<?php echo $row['price'] ?>
-										</span></p>
+										L.E</span></p>
 								</div>
 							</div>
 							<div class="bottom-area d-flex px-3">
@@ -161,7 +161,7 @@ if ($_GET) {
 <script src="js/popper.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 
-										
+
 
 <script>
 	document.addEventListener('DOMContentLoaded', function () {
