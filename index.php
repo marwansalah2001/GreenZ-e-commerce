@@ -183,9 +183,30 @@ if ($_GET) {
 							</div>
 							<div class="bottom-area d-flex px-3">
 								<div class="m-auto d-flex">
-									<span><a class="buy-now d-flex justify-content-center align-items-center mx-1"
-											href="index.php?itemID=<?php echo $row['id'] ?>"><i
-												class="fas fa-shopping-cart"></i></a></span>
+
+
+
+								<!-- For the cart button if there is session add to cart else redirect to login page-->
+
+									<?php if (isset($_SESSION["userID"])) { ?>
+
+										<span><a class="buy-now d-flex justify-content-center align-items-center mx-1"
+												href="index.php?itemID=<?php echo $row['id'] ?>"><i
+													class="fas fa-shopping-cart"></i></a></span>
+
+
+
+									<?php } else { ?>
+
+
+										<span><a class="buy-now d-flex justify-content-center align-items-center mx-1"
+												href="login.php"><i
+													class="fas fa-shopping-cart"></i></a></span>
+
+									<?php } ?>
+
+
+
 
 								</div>
 							</div>

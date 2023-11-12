@@ -2,6 +2,15 @@
 
 require_once "connection.php";
 
+
+if (isset($_SESSION["userID"])) {
+    
+    header('location: index.php');
+
+}
+
+else {
+
 if ($_POST) {
     $name = trim($_POST['name']);
     $email = trim($_POST['email']);
@@ -364,7 +373,7 @@ if ($_POST) {
                             <div class="button input-box">
                                 <input type="submit" value="Submit">
                             </div>
-                            <div class="text sign-up-text">Already have an account? <label for="flip">Log In</label>
+                            <div class="text sign-up-text">Already have an account? <a href="login.php">Log In</a>
                             </div>
                         </div>
                     </form>
@@ -404,3 +413,5 @@ if ($_POST) {
 </body>
 
 </html>
+
+<?php } ?>

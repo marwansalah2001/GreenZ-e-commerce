@@ -1,6 +1,16 @@
 <?php
 require "layout.php";
 require_once "connection.php";
+
+if (!isset($_SESSION["userID"])) {
+    
+    header('location: index.php');
+
+}
+
+else{
+
+
 $user_id = $_SESSION['userID'];
 
 
@@ -173,3 +183,5 @@ if ($_GET) {
 </body>
 
 </html>
+
+<?php } ?>

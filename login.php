@@ -3,24 +3,45 @@
 require_once "connection.php";
 session_start();
 
-if ($_POST) {
-
-    $email = trim($_POST['email']);
-    $password = trim($_POST['password']);
-
-
-
-    $select = "select * from users where email='$email' and password ='$password'";
-    $res = $connect->query($select);
-
-    if ($res->num_rows > 0) {
-        $row = $res->fetch_assoc();
-        $_SESSION['userID'] = $row['id']; //where each user have his own session with his id
-        header('location:index.php');
-    }
+if (isset($_SESSION["userID"])) {
+    
+    header('location: index.php');
 
 }
 
+else{
+
+
+
+
+if ($_POST) {
+    $email = trim($_POST['email']);
+    $password = trim($_POST['password']);
+
+    // Use prepared statements to prevent SQL injection
+    $select = "SELECT * FROM users WHERE email = ? AND password = ?";
+    $stmt = $connect->prepare($select);
+    $stmt->bind_param("ss", $email, $password);
+
+    // Execute the prepared statement
+    $stmt->execute();
+
+    // Get the result
+    $res = $stmt->get_result();
+
+    // Check if there is a matching user
+    if ($res->num_rows > 0) {
+        $row = $res->fetch_assoc();
+        $_SESSION['userID'] = $row['id'];
+        header('location: index.php');
+    } else {
+        // Handle incorrect login credentials
+        echo "Invalid email or password";
+    }
+
+    // Close the statement
+    $stmt->close();
+}
 
 ?>
 
@@ -327,8 +348,8 @@ if ($_POST) {
                             <div class="button input-box">
                                 <input type="submit" value="Log In">
                             </div>
-                            <div class="text sign-up-text">Don't have an account? <label for="flip">Register
-                                    Now...</label>
+                            <div class="text sign-up-text">Don't have an account? <a href="signup.php">Register
+                                    Now...</a>
                             </div>
                         </div>
                     </form>
@@ -339,3 +360,6 @@ if ($_POST) {
 </body>
 
 </html>
+
+
+<?php } ?>  
